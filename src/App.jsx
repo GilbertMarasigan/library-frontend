@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from "react-router-dom";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
@@ -6,20 +10,26 @@ import NewBook from "./components/NewBook";
 const App = () => {
   const [page, setPage] = useState("authors");
 
+  const padding = {
+    padding: 5
+  }
+
   return (
-    <div>
+    <Router>
       <div>
-        <button onClick={() => setPage("authors")}>authors</button>
-        <button onClick={() => setPage("books")}>books</button>
-        <button onClick={() => setPage("add")}>add book</button>
+        <div>
+          <Link style={padding} to="/"><button>authors</button></Link>
+          <Link style={padding} to="/books"><button>books</button></Link>
+          <Link style={padding} to="/books/add"><button>add book</button></Link>
+        </div>
+
+        <Routes>
+          <Route path="/" element={<Authors />}></Route>
+          <Route path="/books" element={<Books />}></Route>
+          <Route path="/books/add" element={<NewBook />}></Route>
+        </Routes>
       </div>
-
-      <Authors show={page === "authors"} />
-
-      <Books show={page === "books"} />
-
-      <NewBook show={page === "add"} />
-    </div>
+    </Router>
   );
 };
 
