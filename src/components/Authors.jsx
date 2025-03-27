@@ -1,6 +1,17 @@
+import { useQuery } from "@apollo/client"
+
+import { ALL_AUTHORS } from "../queries"
+
 const Authors = () => {
 
-  const authors = []
+  const result = useQuery(ALL_AUTHORS, {})
+  const authors = result.data ? result.data.allAuthors : []
+
+  console.log('result',)
+
+  if (result.loading) {
+    return <div>loading...</div>
+  }
 
   return (
     <div>
