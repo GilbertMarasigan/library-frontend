@@ -76,3 +76,9 @@ export const CURRENT_USER = gql`
     }
 }
 `
+
+export const ALL_GENRES = gql`
+query {
+  allGenres
+}
+`
