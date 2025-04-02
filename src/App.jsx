@@ -9,7 +9,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
-
+import Recommend from "./components/Recommend"
 
 const App = () => {
 
@@ -50,6 +50,7 @@ const App = () => {
         <div>
           <Link style={padding} to="/"><button>authors</button></Link>
           <Link style={padding} to="/books"><button>books</button></Link>
+          <Link style={padding} to="/recommend"><button>recommend</button></Link>
           <Link style={padding} to="/books/add"><button>add book</button></Link>
           <button onClick={logout}>logout</button>
         </div>
@@ -57,6 +58,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Authors />}></Route>
           <Route path="/books" element={<Books />}></Route>
+          <Route path="/recommend" element={<Recommend />}></Route>
           <Route path="/books/add" element={<NewBook />}></Route>
         </Routes>
       </div>
