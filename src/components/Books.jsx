@@ -1,7 +1,25 @@
 import { useState } from "react"
-import { useQuery } from "@apollo/client"
+import { useQuery, useSubscription } from "@apollo/client"
 
-import { ALL_BOOKS, ALL_GENRES } from "../queries"
+import { ALL_BOOKS, ALL_GENRES, BOOK_ADDED } from "../queries"
+
+// function that takes care of manipulating cache
+export const updateCache = (cache, query, addedBook) => {
+  // helper that is used to eliminate saving same person twice
+  const uniqByName = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.name
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    }
+  })
+}
 
 const Books = () => {
 
@@ -9,7 +27,7 @@ const Books = () => {
 
   const { data: genresData } = useQuery(ALL_GENRES)
 
-  const { data, loading, error, refetch } = useQuery(ALL_BOOKS, {
+  const { data, refetch } = useQuery(ALL_BOOKS, {
     variables: genre ? { genre } : {},
   })
 
@@ -25,6 +43,17 @@ const Books = () => {
     setGenre(newGenre)
     refetch({ genre: newGenre })
   }
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      console.log(data)
+      const addedBook = data.data.bookAdded
+      console.log('added', addedBook)
+      alert('addedBook', addedBook.title)
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
+    }
+  })
+
 
   return (
     <div>
