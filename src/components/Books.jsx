@@ -49,7 +49,7 @@ const Books = () => {
       console.log(data)
       const addedBook = data.data.bookAdded
       console.log('added', addedBook)
-      alert('addedBook', addedBook.title)
+      alert(`added Book ${addedBook.title}`)
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
     }
   })
